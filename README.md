@@ -1,21 +1,5 @@
 # vuex-demo
 
-> A Vue.js project
+>根据vuex写的demo
+>当项目模块庞大的时候，数据如果只用单个store，不好维护，所以可以采取分模块划分store
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
-```
-
-For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
