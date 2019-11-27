@@ -6,6 +6,7 @@
     <button @click="handleClick(1000)">点击</button>
     <button @click="handleClickSync">异步点击</button>
     {{ getPlace }}
+    <button @click="handleChangeModuleACount">改变模块A的数据</button>
   </div>
 </section>
 
@@ -30,14 +31,17 @@ export default {
       }
     }),
 
-    ...mapGetters(['getPlace'])
+    ...mapGetters({
+      getPlace: 'moduleB/getPlace'
+    })
   },
   methods: {
     ...mapMutations({
-      handleClick: UPDATE_PEOPLE_NUM
+      handleClick: `moduleB/${UPDATE_PEOPLE_NUM}`
     }),
     ...mapActions({
-      handleClickSync: 'updatePeopleNumAsync'
+      handleClickSync: 'moduleB/updatePeopleNumAsync',
+      handleChangeModuleACount: 'moduleB/updateModuleACount'
     })
   }
 }

@@ -4,9 +4,11 @@
     <div class="hello">
     <div>{{ counter }}</div>
     <div>{{ getCount }}</div>
-    <button @click="handleClick(1)">点击</button>
+    <button @click="handleClick(20)">点击</button>
     <button @click="handleClickSync">异步点击</button>
     <div>{{ getUserInfo }}</div>
+    <button @click="updateModuleBPeopleNum">改变moduleB人数</button>
+    <button @click="updateGlobalStatus">改变全局状态</button>
   </div>
 </section>
 
@@ -30,7 +32,10 @@ export default {
       counter: (state) => state.moduleA.count
     }),
 
-    ...mapGetters(['getUserInfo', 'getCount'])
+    ...mapGetters({
+      getUserInfo: 'moduleA/getUserInfo',
+      getCount: 'moduleA/getCount'
+    })
 
     // counter () {
     //   return this.$store.getters.getCount
@@ -41,10 +46,12 @@ export default {
   },
   methods: {
     ...mapMutations({
-      handleClick: UPDATE_COUNT
+      handleClick: `moduleA/${UPDATE_COUNT}`
     }),
     ...mapActions({
-      handleClickSync: 'updateCounterAsync'
+      handleClickSync: 'moduleA/updateCounterAsync',
+      updateModuleBPeopleNum: 'moduleA/updateModuleBPeopleNumAsync',
+      updateGlobalStatus: 'moduleA/updateGlobalStatus'
     })
     // handleClick () {
     //   this.$store.commit('updateCount', 1)
