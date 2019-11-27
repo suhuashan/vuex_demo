@@ -32,18 +32,32 @@ export default () => {
       './state/state_global',
       './getters/getter_global',
       './mutations/mutation_global',
-      './actions/action_global'
+      './actions/action_global',
+      './modules/module_a.js',
+      './modules/module_b.js'
     ], () => {
       const newState = require('./state/state_global').default
       const newGetters = require('./getters/getter_global').default
       const newMutations = require('./mutations/mutation_global').default
       const newActions = require('./actions/action_global').default
+      const newModuleA = require('./modules/module_a.js').default
+      const newModuleB = require('./modules/module_b.js').default
 
       store.hotUpdate({
         state: newState,
         getters: newGetters,
         mutations: newMutations,
-        actions: newActions
+        actions: newActions,
+        modules: {
+          moduleA: {
+            namespaced: true,
+            ...newModuleA
+          },
+          moduleB: {
+            namespaced: true,
+            ...newModuleB
+          }
+        }
       })
     })
   }
