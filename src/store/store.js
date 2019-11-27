@@ -1,12 +1,15 @@
 import Vuex from 'vuex'
 import moduleA from './modules/module_a'
 import moduleB from './modules/module_b'
-import { UPDATE_GLOBAL_STATUS } from './constants/types'
+import state from './state/state_global'
+import mutations from './mutations/mutation_global'
+import actions from './actions/action_global'
+import getters from './getters/getter_global'
 
 let isDev = process.env.NODE_ENV === 'development'
 
 export default () => {
-  return new Vuex.Store({
+  const store = new Vuex.Store({
     strict: isDev,
     modules: {
       moduleA: {
@@ -18,27 +21,32 @@ export default () => {
         ...moduleB
       }
     },
-    state: {
-      globalStatus: false
-    },
-    getters: {
-      getGlobalStatus (store) {
-        return `全局状态为${store.globalStatus};`
-      }
-    },
-    mutations: {
-      [UPDATE_GLOBAL_STATUS] (state, status) {
-        state.globalStatus = status
-      }
-    },
-    actions: {
-      //  对于全局store的action来说，state和rootState是一样的
-      //  rootState表示全局数据，state表示当前模块的数据
-      updateGlobalStatusAsync ({commit, state, rootState}) {
-        setTimeout(() => {
-          commit(UPDATE_GLOBAL_STATUS, !rootState.globalStatus)
-        }, 1000)
-      }
-    }
+    state,
+    getters,
+    mutations,
+    actions
   })
+
+  if (module.hot) {
+    module.hot.accept([
+      './state/state_global',
+      './getters/getter_global',
+      './mutations/mutation_global',
+      './actions/action_global'
+    ], () => {
+      const newState = require('./state/state_global').default
+      const newGetters = require('./getters/getter_global').default
+      const newMutations = require('./mutations/mutation_global').default
+      const newActions = require('./actions/action_global').default
+
+      store.hotUpdate({
+        state: newState,
+        getters: newGetters,
+        mutations: newMutations,
+        actions: newActions
+      })
+    })
+  }
+
+  return store
 }
